@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
 import { Product, Stock } from "../types";
@@ -79,9 +80,30 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
     amount,
   }: UpdateProductAmount) => {
     try {
-      // TODO
+      const alteredCart = [...cart];
+      const productExists = alteredCart.find(
+        (product) => product.id === productId
+      );
+      const productStock = await api.get(`/stock/${productId}`);
+      const productStockAmount = productStock.data.amount;
+
+      if (amount <= 0) {
+        return;
+      }
+
+      if (amount > productStockAmount) {
+        toast.error("Quantidade solicitada fora de estoque");
+        return;
+      }
+
+      if (productExists) {
+        productExists.amount = amount;
+      }
+
+      setCart(alteredCart);
+      localStorage.setItem("@RocketShoes:cart", JSON.stringify(cart));
     } catch {
-      // TODO
+      toast.error("Erro na alteração de quantidade do produto");
     }
   };
 
