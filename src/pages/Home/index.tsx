@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { MdAddShoppingCart } from "react-icons/md";
 
 import { ProductList } from "./styles";
@@ -64,7 +64,6 @@ const Home = (): JSX.Element => {
               <MdAddShoppingCart size={16} color="#FFF" />
               {cartItemsAmount[product.id] || 0}
             </div>
-
             <span>ADICIONAR AO CARRINHO</span>
           </button>
         </li>
