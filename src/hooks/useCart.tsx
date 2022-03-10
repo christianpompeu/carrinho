@@ -1,8 +1,8 @@
 import { createContext, ReactNode, useContext, useState } from "react";
-import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
+// import { MdDoNotDisturbOnTotalSilence } from "react-icons/md";
 import { toast } from "react-toastify";
 import { api } from "../services/api";
-import { Product, Stock } from "../types";
+import { Product } from "../types";
 
 interface CartProviderProps {
   children: ReactNode;
@@ -69,9 +69,20 @@ export function CartProvider({ children }: CartProviderProps): JSX.Element {
 
   const removeProduct = (productId: number) => {
     try {
-      // TODO
+      const alteredCart = [...cart];
+      const productToRemoveIndex = alteredCart.findIndex(
+        (product) => product.id === productId
+      );
+
+      if (productToRemoveIndex>=0) {
+         alteredCart.splice(productToRemoveIndex,1);
+         setCart(alteredCart);
+         localStorage.setItem("@RocketShoes:cart",JSON.stringify(cart));
+      }
+      
+      
     } catch {
-      // TODO
+      toast.error("Erro na remoção do produto");
     }
   };
 
